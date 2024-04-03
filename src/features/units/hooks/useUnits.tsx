@@ -64,7 +64,9 @@ const useAllUnits = create<UnitStore>()(
 );
 
 type UnitContextType = UnitStore & { initiativeId: string };
-const UnitContext = createContext<UnitContextType | undefined>(undefined);
+export const UnitContext = createContext<UnitContextType | undefined>(
+    undefined
+);
 export const UnitContextProvider = function ({
     initiativeId,
     children,
