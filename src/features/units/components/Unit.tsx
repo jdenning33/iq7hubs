@@ -46,7 +46,8 @@ export function Unit({
             id={unit.id}
             className={`p-2 transition-all relative group ${className} ${
                 isEditing && ' bg-primary !text-secondary-content border-2 '
-            }`}
+            }
+            ${(unit as any).node?.status === 'working' && 'bg-primary'}`}
             onClick={(e: any) => {
                 if (e.detail === 2) {
                     setIsEditing(true);
@@ -109,9 +110,30 @@ export function Unit({
                     />
                 ) : (
                     <div className='markdown'>
-                        <Iq7Markdown>
-                            {unit.description || 'Add some content here...'}
-                        </Iq7Markdown>
+                        <div
+                            className={
+                                isSelected ? 'font-semibold' : 'font-medium'
+                            }
+                        >
+                            {(unit as any).title || 'Title'}
+                            {/* {(unit as any).node && (
+                                <button
+                                    onClick={(_) => (unit as any).node.shake()}
+                                    className='btn btn-xs btn-secondary'
+                                >
+                                    shake
+                                </button>
+                            )} */}
+                        </div>
+                        {isSelected ? (
+                            <Iq7Markdown>
+                                {unit.description || 'Add some content here...'}
+                            </Iq7Markdown>
+                        ) : unit.description != 'undefined' ? (
+                            '...'
+                        ) : (
+                            ''
+                        )}
                     </div>
                 )}
             </div>

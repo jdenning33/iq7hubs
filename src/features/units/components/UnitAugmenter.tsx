@@ -84,7 +84,6 @@ export function UnitAugmenter({
                             <UnitChildren
                                 children={suggestedChildren}
                                 afterUsed={(newUnit) => {
-                                    console.log('newUnit', newUnit);
                                     setSuggestedChildren(
                                         suggestedChildren.filter(
                                             (child) => child.id !== newUnit.id

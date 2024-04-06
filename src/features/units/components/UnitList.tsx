@@ -22,7 +22,6 @@ const UnitList = ({ className }: { className?: string }) => {
         if (!selectedUnit && groupedUnitsByDepth[0]?.[0])
             setSelectedUnit(groupedUnitsByDepth[0][0]);
 
-        console.log('newUnit', newUnit);
         if (newUnit) {
             let unitWithLineage = groupedUnitsByDepth
                 .flat()
@@ -106,7 +105,6 @@ const UnitList = ({ className }: { className?: string }) => {
     }
 
     function handleNewUnitAdded(unit: UnitData) {
-        console.log('new unit added', unit);
         setNewUnit(unit);
     }
 

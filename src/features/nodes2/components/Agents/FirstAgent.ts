@@ -1,71 +1,74 @@
-import { NodeType } from '../NodeType';
-import { TryToDeliverContext } from '../NodeTypes';
+import { Iq7Agent } from '../Iq7Agent';
+import { JobContext, JobRequest, JobResponse } from '../types';
 
-export class FirstNodeType extends NodeType {
+export class FirstNodeType extends Iq7Agent {
     name = 'FirstNodeType';
     description = 'Calls two SecondNodeType nodes';
     run = 0;
 
-    async tryToDeliver({ context }: TryToDeliverContext) {
+    async tryToDeliver({ supervisorContext: context }: JobContext) {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         this.run++;
         if (this.run > 1 || context.includes('Delivered'))
             return {
                 deliverable: 'First Node Delivered',
-                subNodeRequests: [],
+                jobRequests: [],
             };
         return {
             deliverable: '',
-            subNodeRequests: [
-                { type: 'SecondNodeType', request: 'Boom Deliver 1' },
-                { type: 'SecondNodeType', request: 'Boom Deliver 2' },
+            jobRequests: [
+                { agentName: 'SecondNodeType', objective: 'Boom Deliver 1' },
+                { agentName: 'SecondNodeType', objective: 'Boom Deliver 2' },
             ],
         };
     }
 }
-export class SecondNodeType extends NodeType {
+export class SecondNodeType extends Iq7Agent {
     name = 'SecondNodeType';
     description = 'SecondNodeType description';
 
-    async tryToDeliver({}: TryToDeliverContext) {
+    async tryToDeliver({}: JobContext): Promise<JobResponse> {
         await new Promise((resolve) => setTimeout(resolve, 2000));
         if (Math.random() > 0.3) {
             return {
                 deliverable: 'Second Node Delivered',
-                subNodeRequests: [],
+                jobRequests: [],
             };
         } else {
             return {
                 deliverable: '',
-                subNodeRequests: [{ type: 'ThirdNodeType', request: 'Boom' }],
+                jobRequests: [
+                    { agentName: 'ThirdNodeType', objective: 'Boom' },
+                ],
             };
         }
     }
 }
-export class ThirdNodeType extends NodeType {
+export class ThirdNodeType extends Iq7Agent {
     name = 'ThirdNodeType';
     description = 'ThirdNodeType description';
 
-    async tryToDeliver({}: TryToDeliverContext) {
+    async tryToDeliver({}: JobContext) {
         await new Promise((resolve) => setTimeout(resolve, 2000));
-        let subNodeTypes = this.getSubNodeTypes();
+        let subNodeTypes = this.getSubAgents();
         if (subNodeTypes.length > 0 && Math.random() > 0.3) {
             return {
                 deliverable: '',
-                subNodeRequests: [
+                jobRequests: [
                     {
-                        type: subNodeTypes[
-                            Math.floor(Math.random() * subNodeTypes.length)
-                        ],
-                        request: 'Boom',
+                        agentName:
+                            subNodeTypes[
+                                Math.floor(Math.random() * subNodeTypes.length)
+                            ],
+                        objective: 'Boom',
                     },
                 ],
             };
         } else {
             return {
                 deliverable: 'Third Node Delivered',
-                subNodeRequests: [],
+                jobRequests: [],
             };
         }
     }
