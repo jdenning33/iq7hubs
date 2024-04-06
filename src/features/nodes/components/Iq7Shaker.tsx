@@ -5,7 +5,7 @@ import { NodeList } from './NodeList';
 
 //const structuredNodes = buildNodeHierarchy(nodes, nodes['main']);
 export const Iq7Shaker = ({ shakerId }: { shakerId: string }) => {
-    const { upsertNode, nodes, handleNewJobRequest, shake } =
+    const { upsertNode, nodes, reset, handleNewJobRequest, shake } =
         useIq7Nodes(shakerId);
     const [lastId, setLastId] = useState<number>(0);
 
@@ -25,19 +25,31 @@ export const Iq7Shaker = ({ shakerId }: { shakerId: string }) => {
 
     const [objectiveText, setObjectiveText] = useState<string>('');
     return (
-        <div className='bg-red-200'>
-            <div
-                className='text-lg font-semibold p-2'
-                onClick={(_) => {
-                    shake();
-                }}
-            >
-                Shaker
+        <div className='p-8'>
+            <div className='w-fit m-auto'>
+                <div className='p-2 mb-4'>
+                    <span className='text-lg font-semibold '>
+                        [Shaker] {` ${shakerId} `}
+                    </span>
+                    <button
+                        className='btn btn-ghost btn-sm opacity-80'
+                        onClick={(_) => shake()}
+                    >
+                        Shake
+                    </button>
+                    <button
+                        className='btn btn-ghost btn-sm opacity-80'
+                        onClick={(_) => reset(shakerId)}
+                    >
+                        Reset
+                    </button>
+                </div>
+
+                <NodeList
+                    shakerId={shakerId}
+                    className='w-[90vw] h-[90vh] m-auto'
+                />
             </div>
-            <NodeList
-                shakerId={shakerId}
-                className='w-[90vw] h-[90vh] m-auto'
-            />
             {nodes.length ? (
                 <></>
             ) : (

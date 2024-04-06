@@ -2,7 +2,7 @@ import { ClaudeAgent } from './ClaudeNode';
 import { OpenAiAgent } from './OpenAiAgent';
 
 export let agents = {
-    main: new ClaudeAgent(
+    main: new OpenAiAgent(
         ['researcher'],
         1,
         `
@@ -28,7 +28,7 @@ You should give your children actionable questions to answer.
 For example, "What is the average cost of a gallon of milk in the US?"
     `
     ),
-    factFinder: new ClaudeAgent(
+    factFinder: new OpenAiAgent(
         [],
         0,
         `
